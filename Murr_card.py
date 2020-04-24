@@ -1,13 +1,15 @@
-    def delete(self, request, *args, **kwargs):
-        author_murr = request.data['username']
-        """Это не работает, возвращает всегда False"""
-        #user = request.data.get("owner")
-        login_user = self.request.user.username
-        self.object = self.get_object(author_murr)
-
-        if login_user == self.object:
-            murr = MurrCard.objects.filter(id=request.query_params['murr_id'])
-        #murr = MurrCard.object.get.all()
+    def delete(self, request):
+        #post = MurrCard.objects.get(id=request.GET.get(murr_id))
+        """Получает конкретный пост"""
+        murr = MurrCard.objects.get(id=request.query_params['murr_id'])
+        """"Получает автора поста"""
+        author = murr.owner_id
+        """Проверка на соответствие"""
+        login_user = request.user.id
+        #print(login_user)
+        #print(author)
+        if author == login_user:
             murr.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response('Hi')
+        else:
+            return Response('Ni Hao')

@@ -1,15 +1,16 @@
     def delete(self, request):
-        #post = MurrCard.objects.get(id=request.GET.get(murr_id))
-        """Получает конкретный пост"""
-        murr = MurrCard.objects.get(id=request.query_params['murr_id'])
-        """"Получает автора поста"""
-        author = murr.owner_id
-        """Проверка на соответствие"""
+        """Можно попробовать так, но я  не уверен, что это будет получать объект."""
+        #murr = MurrCard.id
+        murr = MurrCard.objects.get(id=request.data['murr_id'])
+        print(murr)
+        author = request.data['owner_id']
+        print(author)
         login_user = request.user.id
-        #print(login_user)
-        #print(author)
-        if author == login_user:
+        print(login_user)
+        """Конвертация в инт, так как при получении из пост запроса прилетает объект типа str."""
+        """Respons будут заменены"""
+        if int(author) == login_user:
             murr.delete()
-            return Response('Hi')
+            return Response('Successful')
         else:
-            return Response('Ni Hao')
+            return Response('Is it not')
